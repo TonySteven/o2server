@@ -30,6 +30,9 @@ import java.util.List;
 @JaxrsDescribe("工作")
 public class WorkAction extends StandardJaxrsAction {
 
+	/**
+	 * logger
+	 */
 	private static final Logger logger = LoggerFactory.getLogger(WorkAction.class);
 
 	/**
