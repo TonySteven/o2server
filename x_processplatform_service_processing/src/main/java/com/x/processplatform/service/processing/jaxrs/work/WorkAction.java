@@ -1,21 +1,5 @@
 package com.x.processplatform.service.processing.jaxrs.work;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.container.AsyncResponse;
-import javax.ws.rs.container.Suspended;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-
 import com.google.gson.JsonElement;
 import com.x.base.core.project.annotation.JaxrsDescribe;
 import com.x.base.core.project.annotation.JaxrsMethodDescribe;
@@ -27,14 +11,35 @@ import com.x.base.core.project.jaxrs.ResponseFactory;
 import com.x.base.core.project.jaxrs.StandardJaxrsAction;
 import com.x.base.core.project.logger.Logger;
 import com.x.base.core.project.logger.LoggerFactory;
-import com.x.processplatform.core.entity.element.ActivityType;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.*;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
+
+/**
+ * 工作流相关接口
+ *
+ * @author steven
+ * &#064;date  2023/10/16
+ */
 @Path("work")
 @JaxrsDescribe("工作")
 public class WorkAction extends StandardJaxrsAction {
 
-	private static Logger logger = LoggerFactory.getLogger(WorkAction.class);
+	private static final Logger logger = LoggerFactory.getLogger(WorkAction.class);
 
+	/**
+	 * 创建一个处于start状态的工作.
+	 *
+	 * @param asyncResponse async response
+	 * @param request       request
+	 * @param processId     process id
+	 * @param jsonElement   json element
+	 */
 	@JaxrsMethodDescribe(value = "创建一个处于start状态的工作.", action = ActionCreate.class)
 	@POST
 	@Path("process/{processId}")
@@ -53,6 +58,13 @@ public class WorkAction extends StandardJaxrsAction {
 		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
 
+	/**
+	 * 赋值创建一个处于start状态的work.
+	 *
+	 * @param asyncResponse async response
+	 * @param request       request
+	 * @param jsonElement   json element
+	 */
 	@JaxrsMethodDescribe(value = "赋值创建一个处于start状态的work.", action = ActionAssignCreate.class)
 	@POST
 	@Produces(HttpMediaType.APPLICATION_JSON_UTF_8)
@@ -70,6 +82,14 @@ public class WorkAction extends StandardJaxrsAction {
 		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
 
+	/**
+	 * 流转一个流程实例.
+	 *
+	 * @param asyncResponse async response
+	 * @param request       request
+	 * @param id            id
+	 * @param jsonElement   json element
+	 */
 	@JaxrsMethodDescribe(value = "流转一个流程实例.", action = ActionProcessing.class)
 	@PUT
 	@Path("{id}/processing")
@@ -88,6 +108,13 @@ public class WorkAction extends StandardJaxrsAction {
 		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
 
+	/**
+	 * 删除单个工作.
+	 *
+	 * @param asyncResponse async response
+	 * @param request       request
+	 * @param id            id
+	 */
 	@JaxrsMethodDescribe(value = "删除单个工作.", action = ActionDelete.class)
 	@DELETE
 	@Path("{id}")
@@ -106,6 +133,15 @@ public class WorkAction extends StandardJaxrsAction {
 		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
 
+	/**
+	 * 调度
+	 *
+	 * @param asyncResponse async response
+	 * @param request       request
+	 * @param id            id
+	 * @param activityId    activity id
+	 * @param jsonElement   json element
+	 */
 	@JaxrsMethodDescribe(value = "调度.", action = ActionReroute.class)
 	@PUT
 	@Path("{id}/reroute/activity/{activityId}/activitytype/{activityType}")
@@ -125,6 +161,14 @@ public class WorkAction extends StandardJaxrsAction {
 		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
 
+	/**
+	 * 指定文件增加一个副本.
+	 *
+	 * @param asyncResponse async response
+	 * @param request       request
+	 * @param id            id
+	 * @param jsonElement   json element
+	 */
 	@JaxrsMethodDescribe(value = "指定文件增加一个副本.", action = ActionAddSplit.class)
 	@PUT
 	@Path("{id}/add/split")
@@ -143,6 +187,14 @@ public class WorkAction extends StandardJaxrsAction {
 		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
 
+	/**
+	 * 回滚指定的工作到指定的workLog.
+	 *
+	 * @param asyncResponse async response
+	 * @param request       request
+	 * @param id            id
+	 * @param jsonElement   json element
+	 */
 	@JaxrsMethodDescribe(value = "回滚指定的工作到指定的workLog.", action = ActionRollback.class)
 	@PUT
 	@Path("{id}/rollback")
@@ -161,6 +213,14 @@ public class WorkAction extends StandardJaxrsAction {
 		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
 
+	/**
+	 * 添加人工环节处理人,不会自动产生,需要processing之后才会执行.
+	 *
+	 * @param asyncResponse async response
+	 * @param request       request
+	 * @param id            id
+	 * @param jsonElement   json element
+	 */
 	@JaxrsMethodDescribe(value = "添加人工环节处理人,不会自动产生,需要processing之后才会执行.", action = ActionManualAppendIdentity.class)
 	@PUT
 	@Path("{id}/manual/append/identity")
@@ -179,6 +239,13 @@ public class WorkAction extends StandardJaxrsAction {
 		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
 
+	/**
+	 * 删除滞留的草稿工作.
+	 *
+	 * @param asyncResponse async response
+	 * @param request       request
+	 * @param id            id
+	 */
 	@JaxrsMethodDescribe(value = "删除滞留的草稿工作.", action = ActionDeleteDraft.class)
 	@DELETE
 	@Path("{id}/draft")
@@ -197,6 +264,13 @@ public class WorkAction extends StandardJaxrsAction {
 		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
 
+	/**
+	 * 指定Work运行映射.
+	 *
+	 * @param asyncResponse async response
+	 * @param request       request
+	 * @param id            id
+	 */
 	@JaxrsMethodDescribe(value = "指定Work运行映射.", action = ActionProjection.class)
 	@GET
 	@Path("{id}/projection")
@@ -215,6 +289,14 @@ public class WorkAction extends StandardJaxrsAction {
 		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
 
+	/**
+	 * "V2_调度
+	 *
+	 * @param asyncResponse async response
+	 * @param request       request
+	 * @param id            id
+	 * @param jsonElement   json element
+	 */
 	@JaxrsMethodDescribe(value = "V2_调度.", action = V2Reroute.class)
 	@PUT
 	@Path("v2/{id}/reroute")
@@ -233,6 +315,14 @@ public class WorkAction extends StandardJaxrsAction {
 		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
 
+	/**
+	 * V2_撤回
+	 *
+	 * @param asyncResponse async response
+	 * @param request       request
+	 * @param id            id
+	 * @param jsonElement   json element
+	 */
 	@JaxrsMethodDescribe(value = "V2_撤回.", action = V2Retract.class)
 	@PUT
 	@Path("v2/{id}/retract")
@@ -251,6 +341,14 @@ public class WorkAction extends StandardJaxrsAction {
 		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
 
+	/**
+	 * V2_回滚
+	 *
+	 * @param asyncResponse async response
+	 * @param request       request
+	 * @param id            id
+	 * @param jsonElement   json element
+	 */
 	@JaxrsMethodDescribe(value = "V2_回滚.", action = V2Rollback.class)
 	@PUT
 	@Path("v2/{id}/rollback")
