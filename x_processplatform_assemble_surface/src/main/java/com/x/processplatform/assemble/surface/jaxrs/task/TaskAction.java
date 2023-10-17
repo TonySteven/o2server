@@ -21,11 +21,17 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
+/**
+ * 待办操作_相关接口
+ *
+ * @author steven
+ * @date 2023/10/17
+ */
 @Path("task")
 @JaxrsDescribe("待办操作")
 public class TaskAction extends StandardJaxrsAction {
 
-	private static Logger logger = LoggerFactory.getLogger(TaskAction.class);
+	private static final Logger logger = LoggerFactory.getLogger(TaskAction.class);
 
 	@JaxrsMethodDescribe(value = "根据job获取待办.", action = ActionListWithJob.class)
 	@GET
