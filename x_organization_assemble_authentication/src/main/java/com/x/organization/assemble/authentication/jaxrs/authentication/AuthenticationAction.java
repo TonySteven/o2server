@@ -1,22 +1,5 @@
 package com.x.organization.assemble.authentication.jaxrs.authentication;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.container.AsyncResponse;
-import javax.ws.rs.container.Suspended;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-
 import com.google.gson.JsonElement;
 import com.x.base.core.project.annotation.JaxrsDescribe;
 import com.x.base.core.project.annotation.JaxrsMethodDescribe;
@@ -32,11 +15,26 @@ import com.x.base.core.project.logger.Logger;
 import com.x.base.core.project.logger.LoggerFactory;
 import com.x.organization.assemble.authentication.wrapin.WrapInAuthentication;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.*;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
+
+/**
+ * 认证_相关接口
+ *
+ * @author steven
+ * &#064;date  2023/10/17
+ */
 @Path("authentication")
 @JaxrsDescribe("认证")
 public class AuthenticationAction extends StandardJaxrsAction {
 
-	private static Logger logger = LoggerFactory.getLogger(AuthenticationAction.class);
+	private static final Logger logger = LoggerFactory.getLogger(AuthenticationAction.class);
 
 	@JaxrsMethodDescribe(value = "获取当前可用的登录模式.", action = ActionMode.class)
 	@GET
@@ -73,6 +71,14 @@ public class AuthenticationAction extends StandardJaxrsAction {
 		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
 
+	/**
+	 * 用户登录(credential=xxxx,password=xxxx)
+	 *
+	 * @param asyncResponse async response
+	 * @param request       request
+	 * @param response      response
+	 * @param jsonElement   json element
+	 */
 	@JaxrsMethodDescribe(value = "用户登录.credential=xxxx,password=xxxx", action = ActionLogin.class)
 	@POST
 	@Produces(HttpMediaType.APPLICATION_JSON_UTF_8)
