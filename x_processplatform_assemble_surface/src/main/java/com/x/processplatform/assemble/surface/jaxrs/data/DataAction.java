@@ -19,6 +19,12 @@ import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+/**
+ * 数据操作_相关接口
+ *
+ * @author steven
+ * &#064;date  2023/10/17
+ */
 @Path("data")
 @JaxrsDescribe("数据操作")
 public class DataAction extends StandardJaxrsAction {
